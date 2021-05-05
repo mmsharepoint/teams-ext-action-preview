@@ -95,14 +95,13 @@ export class ActionPreviewBot extends TeamsActivityHandler {
         const activityPreview = action.botActivityPreview[0];
         const attachmentContent = activityPreview.attachments[0].content;
         const eMail = attachmentContent.body[0].text;
-        const url = attachmentContent.body[3].url;
 
         return Promise.resolve({
             task: {
                 type: "continue",
                 value: {
                     title: "Input form",
-                    url: `https://${process.env.HOSTNAME}/actionPreviewMessageExtension/action.html?name={loginHint}&tenant={tid}&group={groupId}&theme={theme}&email=${eMail}&imgurl=${url}`,
+                    url: `https://${process.env.HOSTNAME}/actionPreviewMessageExtension/action.html?name={loginHint}&tenant={tid}&group={groupId}&theme={theme}&email=${eMail}`,
                     height: "medium"
                 }
             }

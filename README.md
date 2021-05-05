@@ -1,30 +1,60 @@
 # Action Preview - Microsoft Teams App
 
-Generate a Microsoft Teams application.
+## Summary
 
-TODO: Add your documentation here
+This small demo sample is a **action** based messaging extension created using the Teams Yeoman Generator as featured in [this video](https://www.youtube.com/watch?v=S1eANUbqaRs&list=PLR9nK3mnD-OUeDoawdmYJJsTlRHd6p5DB&index=7&t=7s). It posts a simple adaptive card to the Team's news channel but 'as a bot' and with an action to update the same adaptive card again and agin.
 
-## Getting started with Microsoft Teams Apps development
+![Result: Adaptive Card ... updating ...](https://mmsharepoint.files.wordpress.com/2021/05/04_adaptivecard_update.gif?w=670&zoom=2)
 
-Head on over to [Microsoft Teams official documentation](https://developer.microsoft.com/en-us/microsoft-teams) to learn how to build Microsoft Teams Tabs or the [Microsoft Teams Yeoman generator Wiki](https://github.com/PnP/generator-teams/wiki) for details on how this solution is set up.
+## Frameworks
 
-## Project setup
+![drop](https://img.shields.io/badge/Bot&nbsp;Framework-4.7-green.svg)
 
-All required source code are located in the `./src` folder - split into two parts
+## Prerequisites
 
-* `app` for the application
-* `manifest` for the Microsoft Teams app manifest
+* [Office 365 tenant](https://dev.office.com/sharepoint/docs/spfx/set-up-your-development-environment)
+* [Node.js](https://nodejs.org) version 10.14.1 or higher
+* [ngrok](https://ngrok.com) or similar tunneling application is required for local testing
 
-For further details see the [Yo Teams wiki for the project structure](https://github.com/PnP/generator-teams/wiki/Project-Structure)
+    ```bash
+    # determine node version
+    node --version
+    ```
+## Version history
 
-## Building the app
+Version|Date|Author|Comments
+-------|----|----|--------
+1.0|May 05, 2021|[Markus Moeller](https://twitter.com/moeller2_0)|Initial release
 
-The application is built using the `build` Gulp task.
+## Disclaimer
 
-``` bash
-npm i -g gulp gulp-cli
-gulp build
-```
+**THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
+
+---
+
+## Minimal Path to Awesome
+- Clone the repository
+
+    ```bash
+    git clone https://github.com/mmsharepoint/teams-ext-action-preview.git
+    ```
+
+- Install modules
+
+    ```bash
+    npm install
+    ```
+- Run ngrok and note down the given url
+
+    ```bash
+    gulp start-ngrok
+    ```
+- Since messaging extensions utilize the Azure Bot Framework, you will need to register a new bot. 
+[These instructions](https://docs.microsoft.com/en-us/microsoftteams/platform/bots/how-to/create-a-bot-for-teams#register-your-web-service-with-the-bot-framework) provide options for registering with or without an Azure subscription. 
+  - Be sure to enable the Microsoft Teams bot channel so your solution can communicate with Microsoft Teams
+  - For local testing, set the messaging endpoint to the https URL returned by ngrok plus "/api/messages"
+  - Note the bot's Application ID and password (also called the Client Secret) assigned to your bot during the registration process. In the Azure portal this is under the Bot Registration settings; in the legacy portal it's in the Settings tab. Click Manage to go to Azure AD to obtain the Client Secret. You may need to create a new Application Secret in order to have an opportunity to copy it out of the Azure portal. 
+- Update the `.env` configuration for the bot to use the Microsoft App Id and App Password (aka Client Secret) from the previous step.
 
 ## Building the manifest
 
@@ -34,9 +64,18 @@ To create the Microsoft Teams Apps manifest, run the `manifest` Gulp task. This 
 gulp manifest
 ```
 
-## Configuration
+  Upload the resulting zip file into Teams [using these instructions](https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/deploy-and-publish/apps-upload).
 
-Configuration is stored in the `.env` file. 
+- Run the bot locally
+    ```bash
+    gulp serve
+    ```
+
+- Test in Microsoft Teams by clicking the ... beneath the compose box in a Team where the application has been installed.
+
+## Features
+
+This is a simple Action based messaging extension
 
 ## Debug and test locally
 
@@ -51,7 +90,6 @@ To debug the code you can append the argument `debug` to the `serve` command as 
 ``` bash
 gulp serve --debug
 ```
-
 To step through code in Visual Studio Code you need to add the following snippet in the `./.vscode/launch.json` file. Once done, you can easily attach to the node process after running the `gulp server --debug` command.
 
 ``` json
@@ -70,9 +108,17 @@ To step through code in Visual Studio Code you need to add the following snippet
 
 ### Using ngrok for local development and hosting
 
-In order to make development locally a great experience it is recommended to use [ngrok](https://ngrok.io), which allows you to publish the localhost on a public DNS, so that you can consume the bot and the other resources in Microsoft Teams.
+In order to make development locally a great experience it is recommended to use [ngrok](https://ngrok.io), which allows you to publish the localhost on a public DNS, so that you can consume the bot and the other resources in Microsoft Teams. 
 
 To use ngrok, it is recommended to use the `gulp ngrok-serve` command, which will read your ngrok settings from the `.env` file and automatically create a correct manifest file and finally start a local development server using the ngrok settings.
+
+For an even better expereince you can
+- Fire up **two** command prompts
+- Both switch to local directory of your solution
+- In one call gulp start-ngrok
+- In the other only run gulp serve --debug
+  - This one you can now start and stop as often as you want without losing your temp. Url
+- [Further details on this](https://mmsharepoint.wordpress.com/2020/06/27/microsoft-teams-app-yeoman-generator-split-ngrok-serve/)
 
 ### Additional build options
 
