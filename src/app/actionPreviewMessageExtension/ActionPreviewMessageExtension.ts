@@ -10,9 +10,6 @@ const log = debug("msteams");
 @PreventIframe("/actionPreviewMessageExtension/config.html")
 @PreventIframe("/actionPreviewMessageExtension/action.html")
 export default class ActionPreviewMessageExtension implements IMessagingExtensionMiddlewareProcessor {
-
-
-
     public async onFetchTask(context: TurnContext, value: MessagingExtensionQuery): Promise<MessagingExtensionResult | TaskModuleContinueResponse> {
         return Promise.resolve<TaskModuleContinueResponse>({
             type: "continue",
